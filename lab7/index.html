@@ -1,31 +1,22 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-
-    <meta charset="UTF-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-   <title>Loja DEISI</title>
+  <title>Loja DEISI</title>
   <link rel="stylesheet" href="style.css" />
-
-
 </head>
-
 <body>
   <header>
-  
     <img class="logo" src="deisi-inverse.svg" alt="DEISI Informática" />
-  <h1>Loja DEISI</h1>
-  <nav aria-label="principal">
-
-    <ul>
-      <li><a href="#produtos">Produtos</a></li>
-      <li><a href="#cesto">Cesto</a></li>
-
-    </ul>
-
-  </nav>
-</header>
-
+    <h1>Loja DEISI</h1>
+    <nav aria-label="principal">
+      <ul>
+        <li><a href="#produtos">Produtos</a></li>
+        <li><a href="#cesto">Cesto</a></li>
+      </ul>
+    </nav>
+  </header>
 
   <main>
     <section id="produtos" aria-labelledby="tit-produtos">
@@ -51,9 +42,7 @@
     </section>
 
     <section id="cesto" aria-labelledby="tit-cesto">
-
       <h2 id="tit-cesto">Produtos Selecionados</h2>
-      
       <section id="lista-cesto" class="grelha" aria-live="polite"></section>
       <section class="total">
         <h3>Custo total:</h3>
@@ -63,23 +52,18 @@
       <form id="checkout" class="checkout" aria-label="comprar">
         <label>
           <input type="checkbox" id="student" />
-
           És estudante do DEISI?
         </label>
         <label>Cupão de desconto:
-
           <input id="coupon" type="text" />
         </label>
         <button id="buy" type="button">Comprar</button>
       </form>
 
       <section class="resultado">
-
         <p id="final">Valor final a pagar (com eventuais descontos): 0,00 €</p>
         <p id="ref">Referência de pagamento: —</p>
         <p id="msg"></p>
-
-
       </section>
     </section>
   </main>

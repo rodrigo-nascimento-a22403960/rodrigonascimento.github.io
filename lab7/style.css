@@ -1,83 +1,75 @@
 :root{
- --roxo:#741a8b;   --roxo2:#5b1470;
-   --bg:#f6f7fa;    --borda:#e6e6e6;
+  --roxo:#741a8b;  --roxo2:#5b1470;
+  --bg:#f6f7fa;    --borda:#e6e6e6;
 }
 
-*{ box-sizing:border-box }
-html, body { margin:0;
-  font-family: system-ui, Segoe UI, Roboto, Arial, sans-serif;
-  background: var(--bg); color:#222 }
+*{box-sizing:border-box}
+html,body{
+  margin:0;
+  font-family:system-ui, Segoe UI, Roboto, Arial, sans-serif;
+  background:var(--bg); color:#222;
+}
+
 
 header{
-  position: sticky; top:0; z-index:10;
+  position:sticky; top:0; z-index:10;
   background:#741a8b; color:#fff; padding:12px 18px;
-  display:grid; grid-template-columns: auto 1fr  auto;
-  align-items:center; gap:12px
+  display:grid; grid-template-columns:auto 1fr auto; gap:12px; align-items:center;
 }
-header .logo{ height:36px;  width:auto;  display:block }
-header h1{ margin:0; text-align:center; font-size:28px; line-height:1 }
+header .logo{height:36px; width:auto; display:block}
+header h1{margin:0; text-align:center; font-size:28px; line-height:1}
+nav ul{list-style:none; margin:0; padding:0; display:flex; gap:18px}
+nav a{color:#fff; text-decoration:none; font-weight:600}
+nav a:hover{text-decoration:underline}
 
-nav ul{
-  list-style:none; margin:0; padding:0;
-  display:flex; gap:18px
-}
-nav a{ color:#fff; text-decoration:none; font-weight:600 }
-nav a:hover{ text-decoration: underline }
 
-header h1 { margin:0;  font-size:28px }
-nav ul{ list-style:none; margin:0; padding:0; display:flex; gap:16px }
-nav a { color:#fff; text-decoration:none }
-nav a:hover{ text-decoration:underline }
+main{max-width:1150px; margin:24px auto; padding:0 16px}
+section{padding-block:12px}
 
-main{ max-width:1150px;  margin:24px auto;  padding:0 16px }
-section{ padding-block:12px }
 #cesto{
-  background: linear-gradient(180deg, var(--roxo) 0, var(--roxo2) 100%);
-  border-radius:18px;  color:#fff;  padding:24px
+  background:linear-gradient(180deg, var(--roxo) 0, var(--roxo2) 100%);
+  border-radius:18px; color:#fff; padding:24px;
 }
+
 
 .barra{
   display:flex; gap:18px; justify-content:center; align-items:center;
   background:#fff; border:1px solid var(--borda); border-radius:16px;
-  padding:10px 12px;  margin:8px auto 18px;  max-width:980px
+  padding:10px 12px; margin:8px auto 18px; max-width:980px;
 }
-.barra label{ display:flex; gap:8px; align-items:center }
-.barra select, .barra input{
-  padding:6px 8px; border:1px solid #dcdcdc; border-radius:10px
-}
+.barra label{display:flex; gap:8px; align-items:center}
+.barra select, .barra input{padding:6px 8px; border:1px solid #dcdcdc; border-radius:10px}
+
 
 .grelha{
-  display:grid;   gap:18px;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr))
+  display:grid; gap:18px;
+  grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
 }
-
 article{
-  background:#fff;  border:1px solid var(--borda);  border-radius:16px;
-  padding:14px; text-align:center; display:flex; flex-direction:column; gap:10px
+  background:#fff; border:1px solid var(--borda); border-radius:16px;
+  padding:14px; text-align:center; display:flex; flex-direction:column; gap:10px;
 }
-article h3{ margin:0;  font-size:20px }
-article p { margin:0;  font-size:13px;  opacity:.9 }
-article img{ width:150px; height:150px; object-fit:contain; margin:auto }
+article h3{margin:0; font-size:20px}
+article p{margin:0; font-size:13px; opacity:.9}
+article img{width:150px; height:150px; object-fit:contain; margin:auto}
 
+/* Botões */
 button{
   appearance:none; border:1px solid var(--borda); background:#eee; cursor:pointer;
-  border-radius:12px; padding:8px 12px
+  border-radius:12px; padding:8px 12px;
 }
-button:hover{ background:#e5e5e5 }
+button:hover{background:#e5e5e5}
 
-#cesto article{ background:#fff;   color:#222 }
-.total{
-  display:flex; justify-content:center; align-items:baseline;
-  gap:10px;  margin-top:12px
-}
-.total h3{ margin:0 }
-#total{  font-size:22px }
+/* Cesto */
+#cesto article{background:#fff; color:#222}
+.total{display:flex; justify-content:center; align-items:baseline; gap:10px; margin-top:12px}
+.total h3{margin:0}
+#total{font-size:22px}
 
 .checkout{
   display:flex; gap:14px; justify-content:center; flex-wrap:wrap;
-  background:#fff; color:#222; border-radius:16px; padding:16px; margin-top:16px
+  background:#fff; color:#222; border-radius:16px; padding:16px; margin-top:16px;
 }
-.checkout input[type="text"] { min-width:220px }
 
-.resultado{ text-align:center;  margin-top:10px }
-footer{ padding:22px;  text-align:center;  color:#666 }
+.resultado{text-align:center; margin-top:10px}
+footer{padding:22px; text-align:center; color:#666}

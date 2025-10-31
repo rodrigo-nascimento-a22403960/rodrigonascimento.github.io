@@ -10,11 +10,11 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function carregarProdutos(listaProdutos){
-  const contentor = document.querySelector('#lista-produtos');
-  contentor.textContent = '';
+  const pai = document.querySelector('#lista-produtos');
+  pai.textContent = '';
   listaProdutos.forEach(prod => {
     const artigo = criarProduto(prod);
-    contentor.append(artigo);
+    pai.append(artigo);
   });
 }
 
@@ -51,8 +51,8 @@ function criarProduto(produto){
 }
 
 function atualizaCesto(){
-  const contentor = document.querySelector('#lista-cesto');
-  contentor.textContent = '';
+  const pai = document.querySelector('#lista-cesto');
+  pai.textContent = '';
 
   const lista = lerLS();
 
@@ -60,14 +60,14 @@ function atualizaCesto(){
     const vazio = document.createElement('p');
     vazio.textContent = 'Nada no cesto.';
     vazio.style.gridColumn = '1 / -1';
-    contentor.append(vazio);
+    pai.append(vazio);
     document.querySelector('#total').textContent = '0,00 €';
     return;
   }
 
   lista.forEach(prod => {
     const artigo = criaProdutoCesto(prod);
-    contentor.append(artigo);
+    pai.append(artigo);
   });
 
   const total = lista.reduce((acc,p) => acc + Number(p.price), 0);

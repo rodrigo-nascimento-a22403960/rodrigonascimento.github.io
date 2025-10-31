@@ -1,0 +1,49 @@
+:root{
+  --roxo:#741a8b;
+  --roxo2:#5b1470;
+  --bg:#f6f7fa;
+  --borda:#e6e6e6;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:#222}
+
+header{
+  position:sticky;top:0;z-index:10;
+  background:var(--roxo);color:#fff;padding:14px 18px;
+  display:flex;justify-content:space-between;align-items:center
+}
+header h1{margin:0;font-size:28px}
+nav ul{list-style:none;margin:0;padding:0;display:flex;gap:16px}
+nav a{color:#fff;text-decoration:none}
+nav a:hover{text-decoration:underline}
+
+main{max-width:1100px;margin:24px auto;padding:0 16px}
+section{padding-block:12px}
+#cesto{background:linear-gradient(180deg,var(--roxo) 0,var(--roxo2) 100%);border-radius:18px;color:#fff;padding:24px}
+
+.grelha{
+  display:grid;
+  gap:18px;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr))
+}
+
+article{
+  background:#fff;border:1px solid var(--borda);border-radius:16px;
+  padding:14px;text-align:center;display:flex;flex-direction:column;gap:10px
+}
+article h3{margin:0;font-size:18px}
+article p{margin:0;font-size:13px;opacity:.85}
+article img{width:150px;height:150px;object-fit:contain;margin:auto}
+
+button{
+  appearance:none;border:1px solid var(--borda);background:#eee;cursor:pointer;
+  border-radius:12px;padding:8px 12px
+}
+button:hover{background:#e5e5e5}
+
+#cesto article{background:#fff;color:#222}
+.total{display:flex;justify-content:center;align-items:baseline;gap:10px;margin-top:12px}
+.total h3{margin:0}
+#total{font-size:22px}
+footer{padding:22px;text-align:center;color:#666}

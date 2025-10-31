@@ -1,7 +1,58 @@
-<header>
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+
+
+  <meta charset="UTF-8" />
+
+   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Loja</title>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
     <h1>Loja</h1>
-    <nav>
+    <nav aria-label="principal">
 
+      <ul>
 
+        <li><a href="#produtos">Produtos</a></li>
+        <li><a href="#cesto">Cesto</a></li>
+
+      </ul>
     </nav>
-</header>
+  </header>
+
+  <main>
+
+    <section id="produtos" aria-labelledby="tit-produtos">
+
+      <h2 id="tit-produtos">Selecione os seus Produtos</h2>
+
+        <section id="lista-produtos" class="grelha" aria-live="polite"></section>
+    </section>
+
+    <section id="cesto" aria-labelledby="tit-cesto">
+
+      <h2 id="tit-cesto">Produtos Selecionados</h2>
+
+      <section id="lista-cesto" class="grelha" aria-live="polite"></section>
+      <section id="total-sec" class="total">
+
+        <h3>Total</h3>
+
+        <p><strong id="total">0,00 €</strong></p>
+        
+      </section>
+    </section>
+  </main>
+
+  <footer>
+    <small>Lab 6 — DIW</small>
+  </footer>
+
+  <script src="produtos.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

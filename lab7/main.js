@@ -2,18 +2,18 @@ const BASE   = 'https://deisishop.pythonanywhere.com';
 const LS_KEY = 'produtos-selecionados-ids';
 let produtos = [];
 
-/* localStorage helpers */
+
 function lerCarrinho(){ return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); }
 function gravarCarrinho(a){ localStorage.setItem(LS_KEY, JSON.stringify(a)); }
 function eur(n){ return `${Number(n).toFixed(2).replace('.', ',')} €`; }
 
-/* UI helpers */
+
 function setLoadingProdutos(on=true){
   const pai = document.querySelector('#lista-produtos');
   pai.textContent = on ? 'A carregar…' : '';
 }
 
-/* API: categorias */
+
 function carregarCategorias(){
   const sel = document.querySelector('#filtro');
   sel.innerHTML = '<option value="">Todas as categorias</option>';
@@ -29,7 +29,7 @@ function carregarCategorias(){
     .catch(()=>{  });
 }
 
-/* API: produtos */
+
 function carregarProdutos(){
   setLoadingProdutos(true);
   fetch(`${BASE}/products/`)
@@ -39,7 +39,7 @@ function carregarProdutos(){
     .finally(()=> setLoadingProdutos(false));
 }
 
-/* filtros, ordenação, pesquisa */
+
 function aplicarFiltrosOrdenacaoPesquisa(){
   const cat = document.querySelector('#filtro').value;
   const ord = document.querySelector('#ordem').value;
@@ -56,7 +56,7 @@ function aplicarFiltrosOrdenacaoPesquisa(){
   renderProdutos(lista);
 }
 
-/* render lista de produtos */
+
 function renderProdutos(arr){
   const pai = document.querySelector('#lista-produtos');
   pai.textContent = '';
@@ -82,7 +82,7 @@ function renderProdutos(arr){
   });
 }
 
-/* render cesto */
+
 function renderCesto(){
   const pai = document.querySelector('#lista-cesto');
   pai.textContent = '';
@@ -128,7 +128,7 @@ function renderCesto(){
   document.querySelector('#total').textContent = eur(total);
 }
 
-/* checkout: POST /buy/ */
+
 function comprar(){
   const body = {
     products: lerCarrinho(),
@@ -155,7 +155,7 @@ function comprar(){
   .catch(()=>{ document.querySelector('#msg').textContent='Falha na ligação.'; });
 }
 
-/* wire-up */
+
 document.addEventListener('DOMContentLoaded', ()=>{
 
 

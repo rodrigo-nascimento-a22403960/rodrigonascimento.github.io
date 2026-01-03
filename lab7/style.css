@@ -73,3 +73,10 @@ button:hover{background:#e5e5e5}
 
 .resultado{text-align:center; margin-top:10px}
 footer{padding:22px; text-align:center; color:#666}
+
+
+@media (max-width: 700px){
+  .barra{flex-direction:column; align-items:stretch}
+  .barra label{justify-content:space-between}
+}
+

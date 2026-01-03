@@ -1,217 +1,240 @@
 // ===========================
 //  Constantes e “estado”
 // ===========================
-
-// URL base da API pública (endpoints: /categories/, /products/, /buy/)
-const BASE   = 'https://deisishop.pythonanywhere.com';
-
-// Chave que vamos usar no localStorage para guardar os IDs do cesto
-const LS_KEY = 'produtos-selecionados-ids';
-
-// Array em memória com TODOS os produtos vindos da API (/products/)
-// (Usamos isto para filtrar/ordenar/pesquisar sem voltar a pedir à API)
+const BASE = "https://deisishop.pythonanywhere.com";
+const LS_KEY = "produtos-selecionados-ids";
 let produtos = [];
 
-
 // ===========================
-//  Utilitários (helpers)
+//  Utilitários
 // ===========================
-
-// Lê do localStorage a lista de IDs colocados no cesto.
-// Se a chave não existir, devolve um array vazio "[]".
 function lerCarrinho() {
-  return JSON.parse(localStorage.getItem(LS_KEY) || '[]');
+  return JSON.parse(localStorage.getItem(LS_KEY) || "[]"); // JSON.parse
 }
 
-// Guarda no localStorage a lista de IDs do cesto (serializada em JSON).
 function gravarCarrinho(a) {
-  localStorage.setItem(LS_KEY, JSON.stringify(a));
+  localStorage.setItem(LS_KEY, JSON.stringify(a)); // JSON.stringify
 }
 
-// Formata um número em euros com 2 casas decimais e vírgula como separador.
 function eur(n) {
-  return `${Number(n).toFixed(2).replace('.', ',')} €`;
+  return `${Number(n).toFixed(2).replace(".", ",")} €`;
 }
 
+// Se o image vier relativo, converte para URL absoluta
+function imgUrl(u) {
+  if (!u) return "";
+  if (u.startsWith("http://") || u.startsWith("https://")) return u;
+  if (u.startsWith("/")) return `${BASE}${u}`;
+  return `${BASE}/${u}`;
+}
 
 // ===========================
-//  Feedback de “carregar…”
+//  Loading (usa innerHTML)
 // ===========================
-
-// Mostra/oculta um pequeno estado de “A carregar…” na grelha de produtos.
 function setLoadingProdutos(on = true) {
-  const pai = document.querySelector('#lista-produtos'); // nó “pai” da grelha
-  pai.textContent = on ? 'A carregar…' : '';
+  const pai = document.querySelector("#lista-produtos");
+
+  if (on) {
+    pai.innerHTML =
+      '<p class="loading" style="grid-column:1/-1;text-align:center">A carregar…</p>';
+    return;
+  }
+
+  const loading = pai.querySelector(".loading");
+  if (loading) loading.remove();
 }
 
-
 // ===========================
-//  Dados de apoio (categorias)
+//  Categorias (evita [object Object])
 // ===========================
+function labelCategoria(c) {
+  if (typeof c === "string") return c;
+  return c?.name ?? c?.title ?? c?.category ?? c?.label ?? String(c);
+}
 
-// Pede as categorias à API e preenche o <select id="filtro">.
-// Mantemos sempre a primeira opção “Todas as categorias”.
-function carregarCategorias() {
-  const sel = document.querySelector('#filtro');
+async function carregarCategorias() {
+  const sel = document.querySelector("#filtro");
   sel.innerHTML = '<option value="">Todas as categorias</option>';
 
-  fetch(`${BASE}/categories/`)
-    .then(r => r.json())              // converte resposta em JSON (array de strings)
-    .then(arr => {
-      arr.forEach(c => {              // cria <option> por cada categoria
-        const o = document.createElement('option');
-        o.value = c;
-        o.textContent = c;
-        sel.append(o);
-      });
-    })
-    .catch(() => {
-      // Em caso de falha, mantemos o select com a opção padrão.
-      // (Poderias também mostrar uma mensagem ao utilizador, se quiseres.)
+  try {
+    const r = await fetch(`${BASE}/categories/`);
+    const arr = await r.json();
+
+    arr.forEach((c) => {
+      const nome = labelCategoria(c);
+      const o = document.createElement("option");
+      o.value = nome;
+      o.textContent = nome;
+      sel.append(o);
     });
+  } catch (e) {
+    // fica com a opção default
+  }
 }
 
-
 // ===========================
-//  Dados principais (produtos)
+//  Produtos (GET) + cache
 // ===========================
+async function carregarProdutos() {
+  setLoadingProdutos(true);
 
-// Pede os produtos à API e guarda em memória (variável global `produtos`).
-// Depois aplica filtros/ordenção/pesquisa e atualiza o cesto.
-function carregarProdutos() {
-  setLoadingProdutos(true); // mostra “A carregar…”
+  try {
+    const r = await fetch(`${BASE}/products/`);
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
 
-  fetch(`${BASE}/products/`)
-    .then(r => r.ok ? r.json() : Promise.reject(r)) // valida HTTP 200..299
-    .then(arr => {
-      produtos = arr;                         // cache local para trabalhar em client-side
-      aplicarFiltrosOrdenacaoPesquisa();      // mostra lista (filtrada/ordenada/pesquisada)
-      renderCesto();                          // e também atualiza o cesto (preços/quantidades)
-    })
-    .catch(() => {
-      // Se a API falhar, informamos o utilizador na área de produtos.
-      const pai = document.querySelector('#lista-produtos');
-      pai.textContent = 'Falha a obter produtos da API.';
-    })
-    .finally(() => setLoadingProdutos(false)); // remove “A carregar…”
+    produtos = await r.json();
+
+    aplicarFiltrosOrdenacaoPesquisa(); // mostra logo os produtos
+    renderCesto(); // atualiza o cesto com os produtos carregados
+  } catch (e) {
+    document.querySelector("#lista-produtos").textContent =
+      "Falha a obter produtos da API.";
+  } finally {
+    setLoadingProdutos(false);
+  }
 }
 
-
-// =====================================================
-//  Filtro + Ordenação + Pesquisa (apenas no lado do cliente)
-// =====================================================
-
+// ===========================
+//  Filtro + Ordenação + Pesquisa
+// ===========================
 function aplicarFiltrosOrdenacaoPesquisa() {
-  // 1) Ler valores dos controlos da barra (selects e input)
-  const cat = document.querySelector('#filtro').value;        // categoria
-  const ord = document.querySelector('#ordem').value;         // critério de ordenação
-  const q   = document.querySelector('#pesquisa').value       // termo de pesquisa
-                    .toLowerCase().trim();
+  const cat = document.querySelector("#filtro").value;
+  const ord = document.querySelector("#ordem").value;
+  const q = document.querySelector("#pesquisa").value.toLowerCase().trim();
 
-  // 2) Começamos de uma cópia dos produtos originais (para não mutar o array global)
   let lista = produtos.slice();
 
-  // 3) Filtro por categoria (se houver)
-  if (cat) lista = lista.filter(p => p.category === cat);
+  if (cat) lista = lista.filter((p) => p.category === cat);
 
-  // 4) Pesquisa por texto em título + descrição (case-insensitive)
-  if (q)   lista = lista.filter(p => (p.title + ' ' + p.description).toLowerCase().includes(q));
+  if (q) {
+    lista = lista.filter((p) =>
+      (p.title + " " + p.description).toLowerCase().includes(q)
+    );
+  }
 
-  // 5) Ordenação (mutável sobre a lista filtrada)
-  if (ord === 'preco-desc') lista.sort((a, b) => b.price - a.price);
-  if (ord === 'preco-asc')  lista.sort((a, b) => a.price - b.price);
-  if (ord === 'titulo-asc') lista.sort((a, b) => a.title.localeCompare(b.title, 'pt'));
+  if (ord === "preco-desc") lista.sort((a, b) => b.price - a.price);
+  if (ord === "preco-asc") lista.sort((a, b) => a.price - b.price);
+  if (ord === "titulo-asc") lista.sort((a, b) => a.title.localeCompare(b.title, "pt"));
 
-  // 6) Render final na grelha
   renderProdutos(lista);
 }
 
-
-// =======================================
-//  Renderização da grelha de produtos
-// =======================================
-
+// ===========================
+//  Produtos (render)
+//  - createElement + append
+//  - data-attribute
+// ===========================
 function renderProdutos(arr) {
-  const pai = document.querySelector('#lista-produtos');
-  pai.textContent = ''; // limpa o conteúdo atual
+  const pai = document.querySelector("#lista-produtos");
+  pai.textContent = "";
 
-  // cria um <article> por produto com imagem, título, preço, descrição, rating e botão
-  arr.forEach(p => {
-    const art   = document.createElement('article');
+  arr.forEach((p) => {
+    const art = document.createElement("article");
 
-    const h3    = document.createElement('h3');  h3.textContent = p.title;
-    const img   = document.createElement('img'); img.src = p.image; img.alt = p.title;
-    const preco = document.createElement('p');   preco.textContent = `Custo total: ${eur(p.price)}`;
-    const desc  = document.createElement('p');   desc.textContent  = p.description;
-    const info  = document.createElement('p');   // mostra categoria e rating (se existir)
-    info.textContent = `Categoria: ${p.category} • ⭐ ${p.rating?.rate ?? '-'}`;
+    const h3 = document.createElement("h3");
+    h3.textContent = p.title;
 
-    const btn   = document.createElement('button');
-    btn.textContent = '+ Adicionar ao Cesto';
-    btn.addEventListener('click', () => {
-      // Lógica do “Adicionar”: lemos os IDs atuais, juntamos o id do produto e gravamos.
-      const ids = lerCarrinho();
-      ids.push(p.id);
-      gravarCarrinho(ids);
-      renderCesto(); // atualizamos imediatamente o cesto na UI
-    });
+    const img = document.createElement("img");
+    img.src = imgUrl(p.image);
+    img.alt = p.title;
+
+    const preco = document.createElement("p");
+    preco.textContent = `Custo total: ${eur(p.price)}`;
+
+    const desc = document.createElement("p");
+    desc.textContent = p.description;
+
+    const info = document.createElement("p");
+    info.textContent = `Categoria: ${p.category} • ⭐ ${p.rating?.rate ?? "-"}`;
+
+    const btn = document.createElement("button");
+    btn.textContent = "+ Adicionar ao Cesto";
+    btn.dataset.action = "add"; // data-attribute
+    btn.dataset.id = String(p.id);
 
     art.append(h3, img, preco, desc, info, btn);
     pai.append(art);
   });
 }
 
+// ===========================
+//  Event handler (event delegation)
+// ===========================
+function onListaProdutosClick(e) {
+  const btn = e.target.closest('button[data-action="add"]');
+  if (!btn) return;
 
-// =======================================
-//  Renderização do CESTO (localStorage)
-// =======================================
+  const id = Number(btn.dataset.id);
+  const ids = lerCarrinho();
+  ids.push(id);
+  gravarCarrinho(ids);
+  renderCesto();
+}
+
+// ===========================
+//  Cesto (localStorage)
+// ===========================
+function resetCheckoutUI() {
+  document.querySelector("#total").textContent = "0,00 €";
+  document.querySelector("#final").textContent =
+    "Valor final a pagar (com eventuais descontos): 0,00 €";
+  document.querySelector("#ref").textContent = "Referência de pagamento: —";
+  document.querySelector("#msg").textContent = "";
+}
 
 function renderCesto() {
-  const pai = document.querySelector('#lista-cesto');
-  pai.textContent = ''; // limpa a grelha do cesto
+  const pai = document.querySelector("#lista-cesto");
+  pai.textContent = "";
 
-  const ids = lerCarrinho(); // array de IDs (pode conter repetidos)
+  const ids = lerCarrinho();
+
   if (!ids.length) {
-    // Estado vazio do cesto
-    const p = document.createElement('p');
-    p.textContent = 'Nada no cesto.';
-    p.style.gridColumn = '1 / -1'; // ocupa a largura toda da grelha
-    pai.append(p);
-
-    // Zera os totais/mensagens do checkout
-    document.querySelector('#total').textContent  = '0,00 €';
-    document.querySelector('#final').textContent  = 'Valor final a pagar (com eventuais descontos): 0,00 €';
-    document.querySelector('#ref').textContent    = 'Referência de pagamento: —';
-    document.querySelector('#msg').textContent    = '';
+    pai.innerHTML =
+      '<p style="grid-column:1/-1;text-align:center">Nada no cesto.</p>';
+    resetCheckoutUI();
     return;
   }
 
-  // Agrupa os IDs iguais para obter quantidades por produto:
-  // cont = { '3': 2, '7': 1, ... }
-  const cont = ids.reduce((m, id) => (m[id] = (m[id] || 0) + 1, m), {});
-  let total = 0; // acumulador do custo total
+  // reduce + map
+  const cont = ids.reduce((m, id) => ((m[id] = (m[id] || 0) + 1), m), {});
+  const itens = Object.entries(cont).map(([id, qty]) => ({
+    id: Number(id),
+    qty,
+  }));
 
-  // Para cada (id, quantidade) cria um card no cesto
-  Object.entries(cont).forEach(([id, qty]) => {
-    // Encontrar o objeto produto (a partir do array `produtos` carregado da API)
-    const p = produtos.find(x => x.id === Number(id));
+  let total = 0;
 
-    // Elementos do card
-    const art   = document.createElement('article');
-    const h3    = document.createElement('h3'); h3.textContent = p.title;
-    const img   = document.createElement('img'); img.src = p.image; img.alt = p.title;
-    const preco = document.createElement('p');  preco.textContent = `Custo total: ${eur(p.price * qty)}`;
-    const meta  = document.createElement('p');  meta.textContent  = `Qtd: ${qty}`;
+  itens.forEach(({ id, qty }) => {
+    const p = produtos.find((x) => x.id === id);
+    if (!p) return;
 
-    // Botões de quantidade e remoção
-    const menos = document.createElement('button'); menos.textContent = '–';
-    const mais  = document.createElement('button'); mais.textContent  = '+';
-    const rm    = document.createElement('button'); rm.textContent   = '– Remover do Cesto';
+    const art = document.createElement("article");
 
-    // “–” remove UMA unidade (primeira ocorrência desse id)
-    menos.addEventListener('click', () => {
+    const h3 = document.createElement("h3");
+    h3.textContent = p.title;
+
+    const img = document.createElement("img");
+    img.src = imgUrl(p.image);
+    img.alt = p.title;
+
+    const preco = document.createElement("p");
+    preco.textContent = `Custo total: ${eur(p.price * qty)}`;
+
+    const meta = document.createElement("p");
+    meta.textContent = `Qtd: ${qty}`;
+
+    const menos = document.createElement("button");
+    menos.textContent = "–";
+
+    const mais = document.createElement("button");
+    mais.textContent = "+";
+
+    const rm = document.createElement("button");
+    rm.textContent = "– Remover do Cesto";
+
+    menos.addEventListener("click", () => {
       const a = lerCarrinho();
-      const i = a.indexOf(Number(id));
+      const i = a.indexOf(id);
       if (i > -1) {
         a.splice(i, 1);
         gravarCarrinho(a);
@@ -219,93 +242,133 @@ function renderCesto() {
       }
     });
 
-    // “+” adiciona MAIS uma unidade
-    mais.addEventListener('click', () => {
+    mais.addEventListener("click", () => {
       const a = lerCarrinho();
-      a.push(Number(id));
+      a.push(id);
       gravarCarrinho(a);
       renderCesto();
     });
 
-    // “Remover do Cesto” elimina TODAS as unidades desse produto
-    rm.addEventListener('click', () => {
-      const a = lerCarrinho().filter(x => x !== Number(id));
+    rm.addEventListener("click", () => {
+      const a = lerCarrinho().filter((x) => x !== id);
       gravarCarrinho(a);
       renderCesto();
     });
 
-    // Monta o card e adiciona ao cesto
     art.append(h3, img, preco, meta, menos, mais, rm);
     pai.append(art);
 
-    // Atualiza total
     total += p.price * qty;
   });
 
-  // Mostra o total acumulado na área do cesto
-  document.querySelector('#total').textContent = eur(total);
+  document.querySelector("#total").textContent = eur(total);
 }
 
+// ===========================
+//  Checkout (POST /buy/) com async/await
+// ===========================
 
-// =======================================
-//  Checkout (POST /buy/)
-// =======================================
 
-function comprar() {
-  // Corpo do pedido (conforme documentação da API):
-  // - products: array de IDs (do localStorage)
-  // - student : boolean (checkbox)
-  // - coupon  : string (texto do cupão)
+function toText(v) {
+  if (v === null || v === undefined) return "";
+  if (typeof v === "string") return v;
+  if (typeof v === "number" || typeof v === "boolean") return String(v);
+
+  if (Array.isArray(v)) {
+    return v.map(toText).filter(Boolean).join(" | ");
+  }
+
+  if (typeof v === "object") {
+    if (typeof v.msg === "string") return v.msg;
+    if (typeof v.message === "string") return v.message;
+    return JSON.stringify(v);
+  }
+
+  return String(v);
+}
+
+function getApiError(data, status) {
+  if (!data) return `Erro HTTP ${status}`;
+
+  if (data.error) return toText(data.error);
+
+  // FastAPI / Pydantic costuma usar "detail"
+  if (data.detail) {
+    if (Array.isArray(data.detail)) {
+      return data.detail.map((x) => x?.msg ?? JSON.stringify(x)).join(" | ");
+    }
+    return toText(data.detail);
+  }
+
+  if (data.message) return toText(data.message);
+
+  return `Erro HTTP ${status}`;
+}
+
+async function comprar() {
+  const msgEl = document.querySelector("#msg");
+  msgEl.textContent = "";
+
+  const name = document.querySelector("#name").value.trim();
+  if (!name) {
+    msgEl.textContent = "Tens de indicar o teu nome.";
+    return;
+  }
+
   const body = {
     products: lerCarrinho(),
-    student : document.querySelector('#student').checked,
-    coupon  : document.querySelector('#coupon').value.trim()
+    student: document.querySelector("#student").checked,
+    coupon: document.querySelector("#coupon").value.trim(),
+    name: name
   };
 
-  // Envio do POST com JSON. Aceitamos e pedimos JSON (“Accept”).
-  fetch(`${BASE}/buy/`, {
-    method : 'POST',
-    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-    body   : JSON.stringify(body)
-  })
-  // Transformamos a resposta em { ok, status, data } para tratar erros uniformemente
-  .then(r => r.json().then(d => ({ ok: r.ok, status: r.status, data: d })))
-  .then(({ ok, status, data }) => {
-    // Em caso de erro da API (ex.: sem produtos, cupão inválido, etc.)
-    if (!ok || data.error) {
-      document.querySelector('#msg').textContent =
-        data.error || `Erro HTTP ${status}`;
+  try {
+    const r = await fetch(`${BASE}/buy/`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify(body)
+    });
+
+    const data = await r.json();
+
+    if (!r.ok || data.error) {
+      msgEl.textContent = data.error || `Erro HTTP ${r.status}`;
       return;
     }
 
-    // Sucesso: a API devolve totalCost (string), reference e uma mensagem “example”
-    document.querySelector('#final').textContent =
+    document.querySelector("#final").textContent =
       `Valor final a pagar (com eventuais descontos): ${eur(Number(data.totalCost))}`;
-    document.querySelector('#ref').textContent =
-      `Referência de pagamento: ${data.reference} €`;
-    document.querySelector('#msg').textContent = data.example || '';
-  })
-  .catch(() => {
-    // Falha de rede/ligação
-    document.querySelector('#msg').textContent = 'Falha na ligação.';
-  });
+
+    document.querySelector("#ref").textContent =
+      `Referência de pagamento: ${data.reference}`;
+
+    // ✅ a API usa "message"
+    msgEl.textContent = data.message || "";
+  } catch (e) {
+    msgEl.textContent = "Falha na ligação.";
+  }
 }
 
 
-// =======================================
-//  Ligação de eventos e arranque da app
-// =======================================
 
-document.addEventListener('DOMContentLoaded', () => {
-  // 1) Povoar filtro de categorias e carregar a lista de produtos
-  carregarCategorias();
-  carregarProdutos();
+// ===========================
+//  Arranque + listeners
+// ===========================
+document.addEventListener("DOMContentLoaded", async () => {
+  // impedir submit do form ao carregar Enter na pesquisa
+  document.querySelector("#toolbar").addEventListener("submit", (e) => e.preventDefault());
 
-  // 2) Ligar controlos da barra à função de atualização da lista
-  document.querySelector('#filtro')  .addEventListener('change', aplicarFiltrosOrdenacaoPesquisa);
-  document.querySelector('#ordem')   .addEventListener('change', aplicarFiltrosOrdenacaoPesquisa);
-  document.querySelector('#pesquisa').addEventListener('input',  aplicarFiltrosOrdenacaoPesquisa);
+  // listeners dos filtros
+  document.querySelector("#filtro").addEventListener("change", aplicarFiltrosOrdenacaoPesquisa);
+  document.querySelector("#ordem").addEventListener("change", aplicarFiltrosOrdenacaoPesquisa);
+  document.querySelector("#pesquisa").addEventListener("input", aplicarFiltrosOrdenacaoPesquisa);
 
-  // 3) Botão de compra (checkout)
-  document.querySelector('#buy').addEventListener('click', comprar);
+  // LISTENER que faltava (Adicionar ao Cesto)
+  document.querySelector("#lista-produtos").addEventListener("click", onListaProdutosClick);
+
+  // LISTENER do Comprar que faltava
+  document.querySelector("#buy").addEventListener("click", comprar);
+
+  await carregarCategorias();
+  await carregarProdutos();
 });

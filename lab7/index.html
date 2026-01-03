@@ -24,17 +24,23 @@
 
       <form id="toolbar" class="barra" aria-label="filtros e pesquisa">
         <label>Filtrar
-          <select id="filtro"></select>
+          <!-- HTML event attribute (1) -->
+          <select id="filtro" onchange="onFiltroChange(event)"></select>
         </label>
+
         <label>Ordenar
-          <select id="ordem">
+          <!-- HTML event attribute (2) -->
+          <select id="ordem" onchange="onOrdemChange(event)">
             <option value="preco-desc">Preço Decrescente</option>
             <option value="preco-asc">Preço Crescente</option>
             <option value="titulo-asc">Título A→Z</option>
           </select>
         </label>
+
         <label>Procurar
-          <input id="pesquisa" type="search" placeholder="pesquise por produto" />
+          <!-- HTML event attribute (3) -->
+          <input id="pesquisa" type="search" placeholder="pesquise por produto"
+                 oninput="onPesquisaInput(event)" />
         </label>
       </form>
 
@@ -44,6 +50,7 @@
     <section id="cesto" aria-labelledby="tit-cesto">
       <h2 id="tit-cesto">Produtos Selecionados</h2>
       <section id="lista-cesto" class="grelha" aria-live="polite"></section>
+
       <section class="total">
         <h3>Custo total:</h3>
         <p><strong id="total">0,00 €</strong></p>
@@ -54,10 +61,20 @@
           <input type="checkbox" id="student" />
           És estudante do DEISI?
         </label>
+
         <label>Cupão de desconto:
           <input id="coupon" type="text" />
         </label>
-        <button id="buy" type="button">Comprar</button>
+
+        <label>Nome:
+  <input id="name" type="text" placeholder="O teu nome" />
+</label>
+
+
+        <!-- usa this (no handler) -->
+        <button id="buy" type="button" onclick="onComprarClick.call(this)">
+          Comprar
+        </button>
       </form>
 
       <section class="resultado">

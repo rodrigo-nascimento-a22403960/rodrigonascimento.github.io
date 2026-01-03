@@ -1,71 +1,93 @@
 <!DOCTYPE html>
 <html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <title>Leiria</title>
-    <link rel="stylesheet" href="styles.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Leiria - Informação</title>
+    <link rel="stylesheet" href="styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
 
-<body>
-    <header>
+  <body>
+    <header class="site-header">
+      <div class="container header-top">
         <h1>Leiria</h1>
-        
+        <p class="tagline">Informação</p>
+      </div>
+
+      <nav class="site-nav container" aria-label="Menu da cidade">
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link" href="local.html">Localização</a>
+        <a class="nav-link" href="multimedia.html">Multimédia</a>
+        <a class="nav-link is-active" href="info.html">Informação</a>
+      </nav>
     </header>
 
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="local.html">Localização</a>
-            <a href="multimedia.html">Multimédia</a>
-            <a href="info.html">Informações</a>
-        </nav>
+    <main class="container">
+      <div class="info-grid">
+        <section class="info-card info-title">
+          <h2>Informações</h2>
+          <p>Alguns dados importantes e curiosidades sobre a cidade de Leiria.</p>
+        </section>
 
-    <main>
-        <h2>Informações</h2>
-        <p>Alguns dados importantes e curiosidades sobre a cidade de Leiria.</p>
+        <figure class="info-card info-img">
+          <img src="images/quadro6.jpg" alt="Imagem de Leiria" />
+          <figcaption>Imagem ilustrativa</figcaption>
+        </figure>
 
-        <table>
+        <section class="info-card info-table">
+          <h3>Dados</h3>
+          <table>
             <tr>
-                <th rowspan="2">Demografia</th>
-                <td>População</td>
-                <td>128.616 hab</td>
+              <th rowspan="2">Demografia</th>
+              <td>População</td>
+              <td>128.616 hab</td>
             </tr>
             <tr>
-                <td>Densidade Populacional</td>
-                <td>227 hab/km²</td>
+              <td>Densidade</td>
+              <td>227 hab/km²</td>
             </tr>
             <tr>
-                <th rowspan="3">Geografia</th>
-                <td>Área</td>
-                <td>565,09 km²</td>
+              <th rowspan="3">Geografia</th>
+              <td>Área</td>
+              <td>565,09 km²</td>
             </tr>
             <tr>
-                <td>Região</td>
-                <td>Leiria</td>
+              <td>Região</td>
+              <td>Leiria</td>
             </tr>
             <tr>
-                <td>País</td>
-                <td>Portugal</td>
+              <td>País</td>
+              <td>Portugal</td>
             </tr>
             <tr>
-                <th >Website Oficial</th>
-                <td colspan="2"><a href="https://www.cm-leiria.pt/" target="_blank">cm-leiria.pt</a></td>
+              <th>Website</th>
+              <td colspan="2"><a href="https://www.cm-leiria.pt/" target="_blank">cm-leiria.pt</a></td>
             </tr>
-        </table>
+          </table>
+        </section>
 
-        
-        <h3>Curiosidades sobre Leiria</h3>
-        <ul>
+        <section class="info-card info-curios">
+          <h3>Curiosidades</h3>
+          <ul>
             <li>O Castelo de Leiria foi mandado construir por D. Afonso Henriques no século XII.</li>
-            <li>O Pinhal de Leiria foi plantado por D. Dinis para proteger os campos e fornecer madeira para os navios.</li>
-            <li>O Pinhal de Leiria é um dos maiores espaços verdes do país e tem mais de 700 anos.</li>
+            <li>O Pinhal de Leiria foi plantado por D. Dinis para proteger campos e fornecer madeira.</li>
             <li>Leiria é considerada Cidade Criativa da Música da UNESCO desde 2019.</li>
-            <li>As Brisas do Lis são um doce conventual típico da cidade.</li>
-        </ul>
+            <li>As Brisas do Lis são um doce típico da cidade.</li>
+          </ul>
+        </section>
+
+        <div class="info-space" aria-hidden="true"></div>
+      </div>
     </main>
 
-    <footer>
-        <p>Portugal, 2025</p>
+    <footer class="site-footer">
+      <div class="container footer-row">
+        <p>DIW 2025</p>
+        <div class="footer-links">
+          <a href="projetos.html">Projetos</a>
+          <a href="diw.html">DIW</a>
+        </div>
+      </div>
     </footer>
-</body>
+  </body>
 </html>

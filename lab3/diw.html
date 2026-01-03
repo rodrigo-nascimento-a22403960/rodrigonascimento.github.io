@@ -1,31 +1,40 @@
 <!DOCTYPE html>
 <html lang="pt">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Leiria - DIW</title>
-    <link rel="stylesheet" href="styles.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
-    <header>
+    <link rel="stylesheet" href="styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+
+  <body>
+    <header class="site-header">
+      <div class="container header-top">
         <h1>Disciplina DIW</h1>
+        <p class="tagline">Desenvolvimento de Interfaces Web</p>
+      </div>
+
+      <nav class="site-nav container" aria-label="Navegação">
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link" href="projetos.html">Projetos</a>
+        <a class="nav-link is-active" href="diw.html">DIW</a>
+      </nav>
     </header>
 
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="projetos.html">Projetos</a>
-        <a href="diw.html">DIW</a>
-    </nav>
-
-    <main>
-        <section class="diw">
-            <h2>Sobre DIW</h2>
-            <p>Esta página foi criada no âmbito da disciplina de Desenvolvimento de Interfaces Web (DIW), no ano letivo de 2025.</p>
-        </section>
+    <main class="container">
+      <section class="section">
+        <h2>Sobre DIW</h2>
+        <p>
+          Esta página foi criada no âmbito da disciplina de Desenvolvimento de Interfaces Web (DIW), com foco em layouts
+          responsivos, flex, grid, position, transitions e efeitos visuais.
+        </p>
+      </section>
     </main>
 
-    <footer>
+    <footer class="site-footer">
+      <div class="container footer-row">
         <p>DIW 2025</p>
+      </div>
     </footer>
-</body>
+  </body>
 </html>

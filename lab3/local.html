@@ -1,35 +1,63 @@
 <!DOCTYPE html>
 <html lang="pt">
-    <head>
-        <meta charset="UTF-8">
-        <title>Leiria</title>
-        <link rel="stylesheet" href="styles.css"
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <header>
-            <h1>Leiria</h1>
-            
-        </header>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Leiria - Localização</title>
+    <link rel="stylesheet" href="styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
 
-        <nav>
-                <a href="index.html">Home</a>
-                <a href="local.html">Localização</a>
-                <a href="multimedia.html">Multimédia</a>
-                <a href="info.html">Informação</a>
-            </nav>
-            
+  <body>
+    <header class="site-header">
+      <div class="container header-top">
+        <h1>Leiria</h1>
+        <p class="tagline">Localização</p>
+      </div>
 
-        <main>
+      <nav class="site-nav container" aria-label="Menu da cidade">
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link is-active" href="local.html">Localização</a>
+        <a class="nav-link" href="multimedia.html">Multimédia</a>
+        <a class="nav-link" href="info.html">Informação</a>
+      </nav>
+    </header>
 
-            <img src="images/paisagem4.jpg" class="primeira"> 
-            <h2>Localização</h2>
-            <p>Leiria é uma cidade do centro de Portugal, capital do distrito homónimo, localizada junto ao rio Lis, a cerca de 140 km a norte de Lisboa e 70 km a sul de Coimbra, e a apenas 20 km da costa atlântica.</p>
-                
-                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d20666.848488087584!2d-8.8249371510018!3d39.75176802052128!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd22731534c9b2b9%3A0x4daf832739d43c6c!2sLeiria!5e0!3m2!1spt-PT!2spt!4v1758636886754!5m2!1spt-PT!2spt" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                </main>
-        <footer>
-            <p>DIW 2025</p>
-        </footer>
-    </body>
+    <main class="container">
+      <h2>Localização</h2>
+
+      <div class="local-layout">
+        <div class="local-texto">
+          <p>
+            Leiria é uma cidade do centro de Portugal, capital do distrito homónimo, localizada junto ao rio Lis, a cerca
+            de 140 km a norte de Lisboa e 70 km a sul de Coimbra, e a apenas 20 km da costa atlântica.
+          </p>
+
+          <img src="images/paisagem4.jpg" class="img-round" alt="Paisagem de Leiria" />
+        </div>
+
+        <div class="local-mapa">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d20666.848488087584!2d-8.8249371510018!3d39.75176802052128!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd22731534c9b2b9%3A0x4daf832739d43c6c!2sLeiria!5e0!3m2!1spt-PT!2spt!4v1758636886754!5m2!1spt-PT!2spt"
+            width="600"
+            height="450"
+            style="border: 0"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Mapa de Leiria"
+          ></iframe>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-row">
+        <p>DIW 2025</p>
+        <div class="footer-links">
+          <a href="projetos.html">Projetos</a>
+          <a href="diw.html">DIW</a>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>

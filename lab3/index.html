@@ -1,37 +1,88 @@
 <!DOCTYPE html>
 <html lang="pt">
-    <head>
-        <meta charset="UTF-8">
-        <title>Leiria</title>
-        <link rel="stylesheet" href="styles.css"
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <header>
-            <h1>Leiria</h1>
-            
-        </header>
-        <nav>
-                <a href="index.html">Home</a>
-                <a href="local.html">Localização</a>
-                <a href="multimedia.html">Multimédia</a>
-                <a href="info.html">Informação</a>
-            </nav>
-        <main>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Leiria</title>
+    <link rel="stylesheet" href="styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
 
-        <div class="galeria">
-        <img src="images/paisagem1.jpg" alt="Paisagem 1">
-        <img src="images/paisagem2.jpg" alt="Paisagem 2">
-        <img src="images/Popleiria-capa.jpg" alt="Paisagem 3">
+  <body>
+    <header class="site-header">
+      <div class="container header-top">
+        <h1>Leiria</h1>
+        <p class="tagline">Cidade de história, rio e inspiração</p>
+      </div>
+
+      <nav class="site-nav container" aria-label="Menu da cidade">
+        <a class="nav-link is-active" href="index.html">Home</a>
+        <a class="nav-link" href="local.html">Localização</a>
+        <a class="nav-link" href="multimedia.html">Multimédia</a>
+        <a class="nav-link" href="info.html">Informação</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" aria-label="Destaque">
+        <div class="hero-overlay"></div>
+
+        <div class="container hero-content">
+         
+
+          <h2 class="hero-title">Descobre Leiria</h2>
+
+         
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="info.html">Ver informações</a>
+            <a class="btn btn-ghost" href="multimedia.html">Ver multimédia</a>
+          </div>
         </div>
+      </section>
 
-            <section>
-            <h2>Home</h2>
-            <p>A minha cidade é muito lindaa!!!</p>
-        </section>
-        </main>
-        <footer>
-            <p>DIW 2025</p>
-        </footer>
-    </body>
+      <section class="section container">
+        <header class="section-header">
+          <h2>Galeria</h2>
+          <p>Exemplo direto de CSS Grid com responsividade.</p>
+        </header>
+
+        <div class="galeria-grid">
+          <figure class="photo">
+            <img src="images/paisagem1.jpg" alt="Paisagem 1" />
+            <figcaption>Paisagem 1</figcaption>
+          </figure>
+
+          <figure class="photo">
+            <img src="images/paisagem2.jpg" alt="Paisagem 2" />
+            <figcaption>Paisagem 2</figcaption>
+          </figure>
+
+          <figure class="photo photo--wide">
+            <img src="images/Popleiria-capa.jpg" alt="Capa de Leiria" />
+            <figcaption>Leiria (capa)</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section section-alt">
+        <div class="container">
+          <h2>Bem-vindo</h2>
+          <p>
+            Este projeto foi desenvolvido para a disciplina de Desenvolvimento de Interfaces Web (DIW), com foco em
+            responsividade e layouts modernos.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-row">
+        <p>DIW 2025</p>
+        <div class="footer-links">
+          <a href="projetos.html">Projetos</a>
+          <a href="diw.html">DIW</a>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>

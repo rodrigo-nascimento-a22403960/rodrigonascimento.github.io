@@ -1,71 +1,133 @@
 <!DOCTYPE html>
 <html lang="pt">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Leiria - Multimédia</title>
-    <link rel="stylesheet" href="styles.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
-    <main>
-        <h2>Multimédia</h2>
-        <p>Nesta página encontra conteúdos multimédia</p>
+    <link rel="stylesheet" href="styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
 
-        <!-- Atalhos melhorados -->
-        <div class="atalhos">
-            <a href="#fotografias"> Fotografias</a>
-            <a href="#video"> Vídeo</a>
-            <a href="#poema"> Poema</a>
+  <body>
+    <header class="site-header">
+      <div class="container header-top">
+        <h1>Leiria</h1>
+        <p class="tagline">Multimédia</p>
+      </div>
+
+      <nav class="site-nav container" aria-label="Menu da cidade">
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link" href="local.html">Localização</a>
+        <a class="nav-link is-active" href="multimedia.html">Multimédia</a>
+        <a class="nav-link" href="info.html">Informação</a>
+      </nav>
+    </header>
+
+    <main>
+      <h2 class="container">Multimédia</h2>
+      <p class="container muted">Fotografias, vídeo, poema, vídeo background e parallax.</p>
+
+      <div class="atalhos container">
+        <a href="#fotografias">Fotografias</a>
+        <a href="#video">Vídeo</a>
+        <a href="#poema">Poema</a>
+        <a href="#bgvideo">Vídeo BG</a>
+        <a href="#parallax">Parallax</a>
+      </div>
+
+      <!-- FOTO EMBLEMÁTICA FULL WIDTH + FRASE (relative/absolute + vw) -->
+      <section class="hero-foto" aria-label="Fotografia emblemática">
+        <img src="images/quadro1.jpg" alt="Imagem emblemática de Leiria" />
+        <div class="hero-frase">Leiria: história em pedra, música no ar.</div>
+      </section>
+
+      <!-- FOTOGRAFIAS -->
+      <section id="fotografias" class="secao-fotos">
+        <h3>Fotografias</h3>
+
+        <div class="banner">
+          <img src="images/quadro2.jpg" alt="Fotografia destaque" />
+          <div class="frase">Leiria, cidade de história e inspiração</div>
         </div>
 
-        <!-- FOTOGRAFIAS -->
-        <section id="fotografias" class="secao-fotos">
-            <h3>Fotografias</h3>
+        <div class="thumbs">
+          <img src="images/quadro3.jpg" alt="Foto 1" />
+          <img src="images/quadro4.jpg" alt="Foto 2" />
+          <img src="images/quadro5.jpg" alt="Foto 3" />
+          <img src="images/quadro6.jpg" alt="Foto 4" />
+          <img src="images/quadro7.jpg" alt="Foto 5" />
+          <img src="images/quadro8.jpg" alt="Foto 6" />
+        </div>
+      </section>
 
-            <div class="banner">
-                <img src="images/quadro1.jpg" alt="Fotografia destaque">
-                <div class="frase">Leiria, cidade de história e inspiração</div>
-                
-            </div>
+      <!-- VÍDEO (YouTube embed melhorado) -->
+      <section id="video" class="secao-video">
+        <h3>Vídeo</h3>
 
-            
-        </section>
+        <div class="video-box">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/Z6HlLuV7ayA?rel=0&modestbranding=1"
+            title="Vídeo sobre Leiria"
+            frameborder="0"
+            loading="lazy"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </section>
 
-        <!-- VÍDEO -->
-        <section id="video" class="secao-video">
-            <h3>Vídeo</h3>
-            <div class="video-box">
-                <iframe src="https://www.youtube.com/embed/Z6HlLuV7ayA?si=tPKC_v9YmM3P_RCN"
-                    title="YouTube video player" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen></iframe>
-            </div>
-        </section>
+      <!-- POEMA -->
+      <section id="poema" class="secao-poema">
+        <h3>Poema</h3>
 
-        <!-- POEMA -->
-        <section id="poema" class="secao-poema">
-            <h3>Poema</h3>
-            <div class="poema">
-                <p>No alto ergue-se o castelo, guardião da memória,</p>
-                <p>Que viu reis e trovadores, no fluir da história.</p>
-                <p>D. Dinis plantou o pinhal, verde mar sem fim,</p>
-                <p>Que deu força às caravelas que partiram daqui.</p>
+        <div class="poema">
+          <p>No alto ergue-se o castelo, guardião da memória,</p>
+          <p>Que viu reis e trovadores, no fluir da história.</p>
+          <p>D. Dinis plantou o pinhal, verde mar sem fim,</p>
+          <p>Que deu força às caravelas que partiram daqui.</p>
 
-                <p>O Lis corre sereno, levando consigo a canção,</p>
-                <p>Das gentes que o acompanham com orgulho e devoção.</p>
-                <p>Entre ruas e praças ecoa tradição,</p>
-                <p>Na doçura das Brisas do Lis, vive a paixão.</p>
+          <p>O Lis corre sereno, levando consigo a canção,</p>
+          <p>Das gentes que o acompanham com orgulho e devoção.</p>
+          <p>Entre ruas e praças ecoa tradição,</p>
+          <p>Na doçura das Brisas do Lis, vive a paixão.</p>
 
-                <p>Leiria é música, é arte, cidade de criação,</p>
-                <p>Coração do Centro, feita de inspiração.</p>
-                <p>Entre o mar e a serra, um refúgio encantado,</p>
-                <p>Onde passado e futuro caminham lado a lado.</p>
-            </div>
-        </section>
+          <p>Leiria é música, é arte, cidade de criação,</p>
+          <p>Coração do Centro, feita de inspiração.</p>
+          <p>Entre o mar e a serra, um refúgio encantado,</p>
+          <p>Onde passado e futuro caminham lado a lado.</p>
+        </div>
+      </section>
+
+   <section id="bgvideo" class="bg-video">
+  <video class="bg-video__media" autoplay muted loop playsinline preload="auto">
+    <source src="video/286278_medium.mp4" type="video/mp4" />
+  </video>
+
+  <div class="bg-video__content">
+    <h3>Vídeo como background</h3>
+    <p>Uma secção com vídeo de fundo para criar ambiente visual.</p>
+  </div>
+</section>
+
+
+
+      <!-- PARALLAX -->
+      <section id="parallax" class="parallax">
+        <div class="parallax__content">
+          <h3>Efeito Parallax</h3>
+          <p>Uma secção com sensação de profundidade ao scroll.</p>
+        </div>
+      </section>
     </main>
 
-    <footer>
-        <p>Portugal, 2025</p>
+    <footer class="site-footer">
+      <div class="container footer-row">
+        <p>DIW 2025</p>
+        <div class="footer-links">
+          <a href="projetos.html">Projetos</a>
+          <a href="diw.html">DIW</a>
+        </div>
+      </div>
     </footer>
-</body>
+  </body>
 </html>

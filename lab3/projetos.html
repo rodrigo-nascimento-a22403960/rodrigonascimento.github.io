@@ -1,35 +1,56 @@
 <!DOCTYPE html>
 <html lang="pt">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Leiria - Projetos</title>
-    <link rel="stylesheet" href="styles.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
-    <header>
+    <link rel="stylesheet" href="styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+
+  <body>
+    <header class="site-header">
+      <div class="container header-top">
         <h1>Projetos</h1>
+        <p class="tagline">Páginas extra do projeto</p>
+      </div>
+
+      <nav class="site-nav container" aria-label="Navegação">
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link is-active" href="projetos.html">Projetos</a>
+        <a class="nav-link" href="diw.html">DIW</a>
+      </nav>
     </header>
 
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="projetos.html">Projetos</a>
-        <a href="diw.html">DIW</a>
-    </nav>
+    <main class="container">
+      <section class="section">
+        <header class="section-header">
+          <h2>Galeria de Projetos</h2>
+          <p>Uma grelha simples com transição ao passar o rato.</p>
+        </header>
 
-    <main>
-        <section class="projetos">
-            <h2>Projetos de Leiria</h2>
-            <div class="galeria">
-                <img src="images/paisagem1.jpg" alt="Paisagem 1">
-                <img src="images/paisagem2.jpg" alt="Paisagem 2">
-                <img src="images/paisagem3.jpg" alt="Paisagem 3">
-            </div>
-        </section>
+        <div class="galeria-grid">
+          <figure class="photo">
+            <img src="images/paisagem1.jpg" alt="Paisagem 1" />
+            <figcaption>Paisagem 1</figcaption>
+          </figure>
+
+          <figure class="photo">
+            <img src="images/paisagem2.jpg" alt="Paisagem 2" />
+            <figcaption>Paisagem 2</figcaption>
+          </figure>
+
+          <figure class="photo">
+            <img src="images/Popleiria-capa.jpg" alt="Leiria" />
+            <figcaption>Leiria</figcaption>
+          </figure>
+        </div>
+      </section>
     </main>
 
-    <footer>
+    <footer class="site-footer">
+      <div class="container footer-row">
         <p>DIW 2025</p>
+      </div>
     </footer>
-</body>
+  </body>
 </html>

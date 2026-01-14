@@ -4,6 +4,10 @@
 const BASE = "https://deisishop.pythonanywhere.com";
 const LS_KEY = "produtos-selecionados-ids";
 let produtos = [];
+const LS_LIKES = "produtos-liked-ids";
+const LS_UNDO = "cesto-undo";
+
+
 
 // ===========================
 //  Utilitários
@@ -15,6 +19,48 @@ function lerCarrinho() {
 function gravarCarrinho(a) {
   localStorage.setItem(LS_KEY, JSON.stringify(a)); // JSON.stringify
 }
+//funçoes para ler e guardar likes
+function lerLikes() {
+  return JSON.parse(localStorage.getItem(LS_LIKES) || "[]");
+}
+
+function gravarLikes(a) {
+  localStorage.setItem(LS_LIKES, JSON.stringify(a));
+}
+
+//funçoes para guradar e desfazer a ultima alteraçao no cesto
+function guardarUndo() {
+  localStorage.setItem(LS_UNDO, JSON.stringify(lerCarrinho()));
+}
+
+function onUndoClick() {
+  const prev = JSON.parse(localStorage.getItem(LS_UNDO) || "null");
+  if (!prev) return;
+  // opcional: permitir “undo” alternado (guarda o atual como undo)
+  localStorage.setItem(LS_UNDO, JSON.stringify(lerCarrinho()));
+  gravarCarrinho(prev);
+  renderCesto();
+}
+
+//funçao para limpar filtros
+function onLimparFiltrosClick() {
+  document.querySelector("#filtro").value = "";
+  document.querySelector("#ordem").value = "preco-desc";
+  document.querySelector("#pesquisa").value = "";
+
+  
+  aplicarFiltrosOrdenacaoPesquisa();
+}
+
+
+
+function toggleLike(id) {
+  let a = lerLikes();
+  a = a.includes(id) ? a.filter((x) => x !== id) : [...a, id];
+  gravarLikes(a);
+  return a.includes(id);
+}
+
 
 function eur(n) {
   return `${Number(n).toFixed(2).replace(".", ",")} €`;
@@ -116,7 +162,18 @@ function aplicarFiltrosOrdenacaoPesquisa() {
   if (ord === "preco-asc") lista.sort((a, b) => a.price - b.price);
   if (ord === "titulo-asc") lista.sort((a, b) => a.title.localeCompare(b.title, "pt"));
 
+  const rate = (p) => Number(p.rating?.rate?? 0);
+  if (ord === "rating-desc") lista.sort((a, b) => rate(b) - rate(a));
+if (ord === "rating-asc")  lista.sort((a, b) => rate(a) - rate(b));
+
+
   renderProdutos(lista);
+}
+
+function limparCesto(){
+  gravarCarrinho([]);
+  renderCesto();
+
 }
 
 // ===========================
@@ -151,8 +208,18 @@ function renderProdutos(arr) {
     btn.textContent = "+ Adicionar ao Cesto";
     btn.dataset.action = "add"; // data-attribute
     btn.dataset.id = String(p.id);
+//adicionar coraçao favoritos
+const likes = lerLikes();
+const liked = likes.includes(p.id); // guardar no localStorage
+    const heart = document.createElement("button");
+heart.type = "button";
+heart.textContent = "♡";
+heart.className = "heart";
+heart.dataset.action = "heart";
+heart.dataset.id = String(p.id);
 
-    art.append(h3, img, preco, desc, info, btn);
+
+    art.append(h3, img, preco, desc, info, btn, heart);
     pai.append(art);
   });
 }
@@ -161,11 +228,19 @@ function renderProdutos(arr) {
 //  Event handler (event delegation)
 // ===========================
 function onListaProdutosClick(e) {
+  const h = e.target.closest('button[data-action="heart"]');
+if (h) {
+  h.classList.toggle("is-liked");
+  h.textContent = h.classList.contains("is-liked") ? "♥" : "♡";
+  return;
+}
+
   const btn = e.target.closest('button[data-action="add"]');
   if (!btn) return;
 
   const id = Number(btn.dataset.id);
   const ids = lerCarrinho();
+  guardarUndo();
   ids.push(id);
   gravarCarrinho(ids);
   renderCesto();
@@ -183,6 +258,12 @@ function resetCheckoutUI() {
 }
 
 function renderCesto() {
+
+  document.querySelector("#undo")?.toggleAttribute(
+  "disabled",
+  !localStorage.getItem(LS_UNDO)
+);
+
   const pai = document.querySelector("#lista-cesto");
   pai.textContent = "";
 
@@ -235,6 +316,8 @@ function renderCesto() {
     menos.addEventListener("click", () => {
       const a = lerCarrinho();
       const i = a.indexOf(id);
+      guardarUndo();
+
       if (i > -1) {
         a.splice(i, 1);
         gravarCarrinho(a);
@@ -244,12 +327,16 @@ function renderCesto() {
 
     mais.addEventListener("click", () => {
       const a = lerCarrinho();
+      guardarUndo();
+
       a.push(id);
       gravarCarrinho(a);
       renderCesto();
     });
 
     rm.addEventListener("click", () => {
+      guardarUndo();
+
       const a = lerCarrinho().filter((x) => x !== id);
       gravarCarrinho(a);
       renderCesto();
@@ -368,6 +455,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // LISTENER do Comprar que faltava
   document.querySelector("#buy").addEventListener("click", comprar);
+
+  //botao limpar cesto
+  const clearBtn = document.querySelector("#clear");
+  if(clearBtn) clearBtn.addEventListener("click", ()=> {
+    gravarCarrinho([]);
+      renderCesto();
+    
+
+  });
 
   await carregarCategorias();
   await carregarProdutos();

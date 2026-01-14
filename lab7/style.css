@@ -80,3 +80,20 @@ footer{padding:22px; text-align:center; color:#666}
   .barra label{justify-content:space-between}
 }
 
+/* coraçao favoritos*/
+
+.heart{
+  border:1px solid rgba(0,0,0,.15);
+  background:transparent;
+  border-radius:10px;
+  padding:6px 10px;
+  cursor:pointer;
+  font-size:18px;
+}
+
+.heart.is-liked{
+  color:#e11d48; /* vermelho/rosa */
+  border-color:rgba(225,29,72,.35);
+}
+
+

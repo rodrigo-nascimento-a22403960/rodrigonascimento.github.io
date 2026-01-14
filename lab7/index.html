@@ -23,6 +23,8 @@
       <h2 id="tit-produtos">Selecione os seus Produtos</h2>
 
       <form id="toolbar" class="barra" aria-label="filtros e pesquisa">
+        <button type="button" onclick="onLimparFiltrosClick()">Limpar filtros</button> <!-- botao para limpar filtros-->
+
         <label>Filtrar
           <!-- HTML event attribute (1) -->
           <select id="filtro" onchange="onFiltroChange(event)"></select>
@@ -34,6 +36,9 @@
             <option value="preco-desc">Preço Decrescente</option>
             <option value="preco-asc">Preço Crescente</option>
             <option value="titulo-asc">Título A→Z</option>
+            <option value="rating-desc">Rating Decrescente</option>
+            <option value="rating-asc">Rating Crescente</option>
+
           </select>
         </label>
 
@@ -55,6 +60,13 @@
         <h3>Custo total:</h3>
         <p><strong id="total">0,00 €</strong></p>
       </section>
+
+      <button id="clear" type="button" onclick="onClearClick()">Limpar cesto</button>
+      
+      <!--  botao para desfazer a ultima açao no cesto-->
+      <button id="undo" type="button" onclick="onUndoClick()">Desfazer</button>
+
+
 
       <form id="checkout" class="checkout" aria-label="comprar">
         <label>
